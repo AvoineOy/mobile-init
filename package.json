@@ -1,0 +1,33 @@
+{
+  "name": "@avoine/mobile-init",
+  "version": "0.1.0",
+  "description": "Init Avoine Mobile application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "bin": {
+    "avoine-mobile-init": "./index.js"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Niklas Lampén",
+    "email": "niklas.lampen@avoine.fi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AvoineOy/mobile-init.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "jest": "^21.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "shelljs": "^0.7.8"
+  }
+}
