@@ -3,7 +3,8 @@ import { View, StatusBar } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import { Login, defaultStyles } from '@avoine/mobile-components'
+import { Login } from '@avoine/mobile-components'
+import { statusBar } from '../MainTabs'
 import appConfig from '../../appConfig'
 
 
@@ -11,20 +12,18 @@ class LoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.styles.AvoineSSOLogin.TextInput.height = 70;
   }
 
   render() {
     return (
       <View style={{flex: 1}}>
-        <StatusBar
-          backgroundColor={appConfig.secondaryColor}
-          barStyle="light-content"
-          hidden={false}
-        />
+
+        {statusBar({
+          barStyle: 'dark-content'
+        })}
+
         <Login
           config={appConfig}
-          style={appConfig.Login.style}
           onLogin={this.props.onLoginSuccess}
         />
       </View>

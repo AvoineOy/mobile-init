@@ -1,9 +1,23 @@
 import React from 'react';
-import { View, Image, Alert } from 'react-native';
+import { View, Image, Alert, StatusBar } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import appConfig from '../appConfig'
+
+const statusBar = (config = {}) => {
+  const backgroundColor = config.backgroundColor || appConfig.statusBarBackgroundColor
+  const barStyle = config.barStyle || appConfig.statusBarStyle
+  const hidden = config.hidden || appConfig.statusBarHidden
+
+  return (
+    <StatusBar
+      backgroundColor={backgroundColor}
+      barStyle={barStyle}
+      hidden={hidden}
+    />
+  )
+}
 
 import {
   NewsScreen,
@@ -12,28 +26,28 @@ import {
 
 const stackNavigationOptions = {
   headerLeft: (
-    <View style={appConfig.styles.navigation.headerLeft.outerContainer}>
-      <View style={appConfig.styles.navigation.headerLeft.innerContainer}>
-      {/* One could add an icon or image here */}
-      </View>
+    <View style={appConfig.style.navigation.headerLeft.outerContainer}>
+      {/*<View style={appConfig.style.navigation.headerLeft.innerContainer}>
+        One could add an icon or image here
+      </View> */}
     </View>
   ),
   headerRight: (
-    <View style={appConfig.styles.navigation.headerRight.outerContainer}>
-      <View style={appConfig.styles.navigation.headerRight.innerContainer}>
+    <View style={appConfig.style.navigation.headerRight.outerContainer}>
+      <View style={appConfig.style.navigation.headerRight.innerContainer}>
         <Icon
           name="view-headline"
           size={30}
-          color={appConfig.styles.navigation.mainColor}
-          onPress={() => Alert.alert('Push', 'Tökkäsit nappulaa!')}
+          color={appConfig.secondaryColor}
+          onPress={() => Alert.alert('Sukkelat sormet!', 'Tökkäsit nappulaa!')}
         />
       </View>
     </View>
   ),
-  headerStyle: appConfig.styles.navigation.headerStyle,
-  headerTitleStyle: appConfig.styles.navigation.headerTitleStyle,
-  headerTintColor: appConfig.styles.navigation.headerTintColor,
-  headerBackTitleStyle: appConfig.styles.navigation.headerBackTitleStyle,
+  headerStyle: appConfig.style.navigation.headerStyle,
+  headerTitleStyle: appConfig.style.navigation.headerTitleStyle,
+  headerTintColor: appConfig.style.navigation.headerTintColor,
+  headerBackTitleStyle: appConfig.style.navigation.headerBackTitleStyle,
 }
 
 const MainTabs = TabNavigator(
@@ -53,7 +67,7 @@ const MainTabs = TabNavigator(
     order: [
       'News',
     ],
-    tabBarOptions: appConfig.styles.navigation.tabBarOptions
+    tabBarOptions: appConfig.style.navigation.tabBarOptions
   }
 )
 
@@ -66,7 +80,7 @@ const stack = new StackNavigator(
       screen: NewsItemScreen,
       navigationOptions: Object.assign({}, stackNavigationOptions, {
         headerLeft: undefined,
-        headerBackTitle: "Takaisin"
+        headerBackTitle: null
       })
     }
   },
@@ -75,4 +89,5 @@ const stack = new StackNavigator(
   }
 );
 
-export default stack;
+export default stack
+export { statusBar }

@@ -1,19 +1,21 @@
 import React from 'react';
-import { ScrollView, Image, View, Dimensions, StatusBar, RefreshControl } from 'react-native';
+import { ScrollView, Image, View, Dimensions, StatusBar, RefreshControl, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 
 import PropTypes from 'prop-types'
 
 import { loginRequired } from '../loginRequired'
-import { defaultStyles, NewsList } from '@avoine/mobile-components'
+import { NewsList } from '@avoine/mobile-components'
 
+import { statusBar } from '../MainTabs'
 import appConfig from '../../appConfig'
 
 class NewsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Uutiset',
+    title: 'Avoinen uutiset',
     tabBarLabel: 'Uutiset',
+    headerBackTitle: null,
     tabBarVisible: true,
     tabBarIcon: ({ tintColor }) => <Icon name="subject" size={35} color={tintColor} />
   }
@@ -52,43 +54,89 @@ class NewsScreen extends React.Component {
           refreshing: false
         })
       })
-      .catch(err => console.log('refreshNews() error:', err))
+      .catch(err => {
+        console.log('refreshNews() error:', err)
+        this.setState({
+          refreshing: false
+        })
+      })
   }
 
-  convertDate = (timestamp) => timestamp * 1000;
+  // convertDate = (timestamp) => timestamp * 1000;
+  convertDate = (input) => {
+    const dateParts = /^(.*)\.(.*)\.(.*)$/.exec(input);
+    const date = (new Date(dateParts[3] + '-' + dateParts[2] + '-' + dateParts[1]))
+
+    return date.getTime();
+  };
 
   render() {
     const { navigation, openNewsItem } = this.props;
     const deviceWidth = Dimensions.get("window").width;
-    let styles = defaultStyles;
 
-    return (
-      <ScrollView
-        horizontal={false}
-        style={{
-          flex: 1
-        }}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.refreshNews.bind(this)}
+    if (this.state.refreshing === false && this.state.items.length === 0) {
+      return (
+        <View
+          style={[
+            appConfig.style.mainContainer,
+            {
+              alignItems: 'center',
+              justifyContent: 'center'
+            }
+          ]}
+        >
+
+          {statusBar()}
+
+          <View
+            style={{
+              paddingBottom: 30,
+              opacity: 0.7
+            }}
+          >
+            <Image
+              source={require('../assets/img/bam.gif')}
+              style={{
+                width: 100,
+                height: 80
+              }}
+            />
+          </View>
+          <Text
+            style={[appConfig.style.text, { textAlign: 'center' }]}
+          >
+            Pyhä jysäys, Batman!
+            {'\n'}
+            Yhtään uutista ei löytynyt!
+          </Text>
+        </View>
+      )
+    } else {
+      return (
+        <ScrollView
+          horizontal={false}
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.refreshNews.bind(this)}
+            />
+          }
+        >
+
+          {statusBar()}
+
+          <NewsList
+            items={this.state.items}
+            style={appConfig.NewsList.style}
+            appConfig={appConfig}
+            navigation={navigation}
+            map={{summary: 'cutBody', thumbnail: 'image' }}
+            convertDate={this.convertDate}
           />
-        }
-      >
-        <StatusBar
-          backgroundColor="#cb005c"
-          barStyle="light-content"
-          hidden={false}
-        />
-        <NewsList
-          items={this.state.items}
-          style={styles}
-          navigation={navigation}
-          map={{id: 'node_id', date: 'created_date' , thumbnail: 'image' }}
-          convertDate={this.convertDate}
-        />
-      </ScrollView>
-    );
+        </ScrollView>
+      );
+    }
   }
 }
 
