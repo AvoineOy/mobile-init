@@ -6,8 +6,9 @@ import store from './reducers'
 
 import SampleMobileApp from './components/SampleMobileApp'
 import * as actions from './actions'
+import * as screens from './screens';
 import appConfig from '../appConfig'
-import LoginScreen from './screens/LoginScreen';
+import { LOGIN } from './actions';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
     const storeState = store.getState();
 
     this.state = {
-      isLoading: false,
+      isLoading: true,
       isLoggedIn: storeState.login.access_token !== undefined
     }
 
@@ -43,8 +44,7 @@ export default class App extends React.Component {
   async checkPriorLogin() {
     const hash = await AsyncStorage.getItem(appConfig.storage + ':' + 'access_token')
       .then(foo => foo);
-    
-      // return 'abba'
+
     return hash || undefined;
   }
 
@@ -86,13 +86,8 @@ export default class App extends React.Component {
 
     return (
       <Provider store={store}>
-        {
-          this.state.isLoggedIn ? 
-            <SampleMobileApp onLogout={this.onLogout} />
-            : <LoginScreen onLoginSuccess={this.onLoginSuccess} />
-        }
+        <SampleMobileApp onLogout={this.onLogout} onLoginSuccess={this.onLoginSuccess} />
       </Provider>
     )
   }
 }
-

@@ -8,6 +8,8 @@ import PropTypes from 'prop-types'
 import { loginRequired } from '../loginRequired'
 import { NewsList } from '@avoine/mobile-components'
 
+import { NavigationActions } from 'react-navigation'
+
 import { statusBar } from '../MainTabs'
 import appConfig from '../../appConfig'
 
@@ -26,14 +28,25 @@ class NewsScreen extends React.Component {
     this.state = {
       items: [],
       newsLoading: true,
-      refreshing: false 
+      refreshing: false
     }
 
     this.refreshNews = this.refreshNews.bind(this)
   }
 
   componentWillMount() {
-    this.refreshNews();
+    if (this.loginRequired && this.props.isLoggedIn === false) {
+      const navigateAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Login'})
+        ]
+      })
+      
+      this.props.navigation.dispatch(navigateAction)
+    } else {
+      this.refreshNews();
+    }
   }
 
   readNews(url) {
@@ -157,4 +170,4 @@ const mapStateToProps = (ownProps) => {
 export default loginRequired(connect(
   mapStateToProps,
   null
-)(NewsScreen), true);
+)(NewsScreen), false);

@@ -1,25 +1,40 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native'
+import { Text, View, StatusBar, Button } from 'react-native'
+import { Icon } from 'react-native-elements';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
 import { Login } from '@avoine/mobile-components'
+
+import { loginRequired } from '../loginRequired'
+import * as actions from '../actions'
 import { statusBar } from '../MainTabs'
 import appConfig from '../../appConfig'
 
 
 class LoginScreen extends React.Component {
 
+  static navigationOptions = ({ navigation, screenProps }) => {
+    let opts = {}
+
+    if (navigation.state.params.showBackButton === false) {
+      opts.header = null
+    }
+
+    return opts;
+  }
+
   constructor(props) {
     super(props);
   }
 
   render() {
+    const viewBar = !!this.props.navigation.state.params.showBackButton
+
     return (
       <View style={{flex: 1}}>
 
         {statusBar({
-          barStyle: 'dark-content'
+          barStyle: viewBar ? 'light-content' : 'dark-content',
         })}
 
         <Login
@@ -31,18 +46,13 @@ class LoginScreen extends React.Component {
   }
 }
 
-LoginScreen.displayName = 'LoginScreen'
-LoginScreen.propTypes = {
-  onLoginSuccess: PropTypes.func.isRequired
-}
-
 const mapStateToProps = (ownProps) => {
   return {
     isLoggedIn: ownProps.login.access_token !== undefined
   }
 }
 
-export default connect(
+export default loginRequired(connect(
   mapStateToProps,
   null
-)(LoginScreen)
+)(LoginScreen), false)
