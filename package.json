@@ -1,6 +1,6 @@
 {
   "name": "@avoine/mobile-init",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Init Avoine Mobile application",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.7.8",
+    "shelljs.exec": "^1.1.7"
   }
 }

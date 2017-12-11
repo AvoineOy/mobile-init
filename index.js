@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const shell = require('shelljs');
+const exec = require('shelljs.exec');
 //const path = require('path');
 
 const packagesToInstall = [
@@ -32,24 +33,33 @@ if (_.isEmpty(params[0])) {
 
 const installPath = params[0].toLowerCase();
 
-console.log('Run react-native init ' + installPath);
-shell.exec('react-native init ' + installPath);
+console.log('-- Executing `react-native init ' + installPath + '` to init React Native project --\n');
+exec('react-native init ' + installPath);
+console.log('\n[OK]\n')
 
 
-console.log('Copy Avoine Mobile Application template to ' + installPath)
+console.log('-- Copying Avoine Mobile Application template to ' + installPath + ' --')
 const currentPath = process.cwd()
 const sourcePath = __dirname + '/template/*'
 const targetPath = currentPath + '/' + installPath
 shell.cp('-R', sourcePath, targetPath)
+console.log('\n[OK]\n')
 
 
-console.log('Install packages needed by Avoine Mobile Application')
+console.log('-- Installing packages needed by Avoine Mobile Application --')
 shell.cd(targetPath);
 const packageString = packagesToInstall.join(' ');
-shell.exec('npm i --save install ' + packageString)
+exec('npm i --save install ' + packageString)
+console.log('\n[OK]\n')
 
 
-console.log('Linking react-native packages')
-shell.exec('react-native link')
+console.log('-- Linking react-native packages --\n')
+exec('react-native link')
 
-console.log('Done!')
+
+console.log('\n[OK]\n')
+console.log(
+  '-- What\'s next --\n\n'
+  + 'Run `cd ' + installPath + '` and `react-native run-ios` or `react-native run-android` to see your new application in action!\n'
+  + '\n[DONE]\n'
+)
