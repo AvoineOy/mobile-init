@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import PropTypes from 'prop-types'
 
-import { loginRequired } from '../loginRequired'
 import { NewsList } from '@avoine/mobile-components'
 
 import { NavigationActions } from 'react-navigation'
@@ -143,9 +142,9 @@ class NewsScreen extends React.Component {
             items={this.state.items}
             style={appConfig.NewsList.style}
             appConfig={appConfig}
-            navigation={navigation}
             map={{summary: 'cutBody', thumbnail: 'image' }}
             convertDate={this.convertDate}
+            openNewsItem={() => this.props.openNewsItem}
           />
         </ScrollView>
       );
@@ -161,13 +160,17 @@ NewsScreen.propTypes = {
 const mapStateToProps = (ownProps) => {
   return {
     isLoggedIn: ownProps.login.access_token !== undefined,
-    openNewsItem: (newsItem) => {
-      ownProps.navigation.navigate('NewsItem', {newsItem: newsItem})
+    openNewsItem: (newsItem, appConfig) => {
+      console.log('Navigating!')
+      ownProps.navigation.navigate('NewsItemScreen', {
+        newsItem,
+        appConfig
+      })
     }
   }
 }
 
-export default loginRequired(connect(
+export default connect(
   mapStateToProps,
   null
-)(NewsScreen), false);
+)(NewsScreen)

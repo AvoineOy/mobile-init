@@ -19,7 +19,13 @@ const config = buildConfig(
     hilightColor,
     inactiveHilightColor,
     statusBarHidden: false,
-    statusBarStyle: 'light-content' // 'default' || 'light-content' || 'dark-content'
+    statusBarStyle: 'light-content', // 'default' || 'light-content' || 'dark-content'
+    config: {
+      Login: {
+        logo: null,
+        codeText: 'Et ole kirjautuneena' + `\n` + 'Syötä numerosi tai emailisi',
+      },
+    }
   }
 )
 

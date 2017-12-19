@@ -55,9 +55,9 @@ console.log('\n[OK]\n')
 
 console.log('-- Linking react-native packages --\n')
 exec('react-native link')
-
-
 console.log('\n[OK]\n')
+
+
 console.log(
   '-- What\'s next --\n\n'
   + 'Run `cd ' + installPath + '` and `react-native run-ios` or `react-native run-android` to see your new application in action!\n'

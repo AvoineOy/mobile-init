@@ -1,18 +1,22 @@
 import React from 'react';
-import { ScrollView, Image, View, Dimensions, StatusBar, RefreshControl, Text } from 'react-native';
+import { ScrollView, Image, View, Dimensions, StatusBar, RefreshControl, Text, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 
 import PropTypes from 'prop-types'
 
-import { loginRequired } from '../loginRequired'
 import { NewsList } from '@avoine/mobile-components'
 
 import { statusBar } from '../MainTabs'
 import appConfig from '../../appConfig'
-import { ext } from '../screens'
+import * as actions from '../actions'
+import { ext, LoginScreen } from '../screens'
 
 class ProfileScreen extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object
+  }
+
   static navigationOptions = {
     title: 'Omat tiedot',
     tabBarLabel: 'Omat tiedot',
@@ -24,28 +28,17 @@ class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.loginRequired = true
-
     this.state = {
       items: [],
       refreshing: false
     }
   }
 
-  componentWillMount() {
-    /* if (this.loginRequired && this.props.isLoggedIn === false) {
-      const navigateAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'LoginScreen' })
-        ]
-      })
-      
-      this.props.navigation.dispatch(navigateAction)
-    } */
-  }
-
   render() {
+    if (!this.props.isLoggedIn) {
+      return (<LoginScreen />)
+    }
+
     return (
       <ScrollView
         horizontal={false}
@@ -65,24 +58,35 @@ class ProfileScreen extends React.Component {
         <Text>
           {this.props.access_token}
         </Text>
+
+        <Text>Is logged:</Text>
+
+        <Text>
+          {this.props.isLoggedIn ? 'true' : 'false'}
+        </Text>
+
+        <Button onPress={this.props.logout} title='logout' />
       </ScrollView>
     );
   }
 }
 
-ProfileScreen.propTypes = {
-  navigation: PropTypes.object,
-  access_token: PropTypes.object,
-}
-
 const mapStateToProps = (ownProps) => {
   return {
     isLoggedIn: ownProps.login.access_token !== undefined,
-    access_token: ownProps.login.access_token || null,
+    access_token: ownProps.login.access_token || 'undefined',
   }
 }
 
-export default loginRequired(connect(
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => {
+      dispatch(actions.logout())
+    }
+  }
+}
+
+export default connect(
   mapStateToProps,
-  null
-)(ProfileScreen), true);
+  mapDispatchToProps
+)(ProfileScreen);
