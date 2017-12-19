@@ -1,6 +1,6 @@
 {
   "name": "@avoine/mobile-init",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Init Avoine Mobile application",
   "main": "index.js",
   "scripts": {

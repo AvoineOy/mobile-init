@@ -144,7 +144,7 @@ class NewsScreen extends React.Component {
             appConfig={appConfig}
             map={{summary: 'cutBody', thumbnail: 'image' }}
             convertDate={this.convertDate}
-            openNewsItem={() => this.props.openNewsItem}
+            openNewsItem={this.props.openNewsItem(navigation)}
           />
         </ScrollView>
       );
@@ -160,10 +160,14 @@ NewsScreen.propTypes = {
 const mapStateToProps = (ownProps) => {
   return {
     isLoggedIn: ownProps.login.access_token !== undefined,
-    openNewsItem: (newsItem, appConfig) => {
-      console.log('Navigating!')
-      ownProps.navigation.navigate('NewsItemScreen', {
-        newsItem,
+
+    /**
+     * This returns a function which will navigate to
+     * `NewsItemScreen`.
+     */
+    openNewsItem: (navigation) => (newsItem, appConfig) => {
+      navigation.navigate('NewsItemScreen', {
+        item: newsItem,
         appConfig
       })
     }
