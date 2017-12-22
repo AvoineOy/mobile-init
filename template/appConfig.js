@@ -29,7 +29,7 @@ const config = buildConfig(
   }
 )
 
-console.log(config);
+console.log('Active configuration', config);
 
 config.NewsList.source = 'https://blog.avoine.fi/mobilefeed/'
 

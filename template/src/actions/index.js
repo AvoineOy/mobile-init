@@ -1,6 +1,6 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
-export const UPDATE_NEWS = 'UPDATE_NEWS'
+export const UPDATE_ME = 'UPDATE_ME'
 
 
 export const login = access_token => {
@@ -16,9 +16,9 @@ export const logout = () => {
   }
 }
 
-export const updateNews = obj => {
+export const updateMe = obj => {
   return {
-    type: UPDATE_NEWS,
+    type: UPDATE_ME,
     ...obj
   }
 }

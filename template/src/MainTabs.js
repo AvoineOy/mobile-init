@@ -60,12 +60,18 @@ const MainTabs = TabNavigator(
       screen: screens.ProfileScreen,
       navigationOptions: stackNavigationOptions
     },
+
+    MemberCardScreen: {
+      screen: screens.MemberCardScreen,
+      navigationOptions: stackNavigationOptions
+    }
   },
   {
     initialRouteName: 'NewsScreen',
     animationEnabled: true,
     swipeEnabled: false,
     tabBarOptions: appConfig.style.navigation.tabBarOptions,
+    lazy: true
   }
 )
 
@@ -101,94 +107,6 @@ const stackNavigator = new StackNavigator(
     initialRouteName: 'Home',
   }
 )
-
-// const defaultGetStateForAction = stackNavigator.router.getStateForAction;
-
-// const customStateForAction = (action, state) => {  
-//   console.log('action', action)
-//   console.log('state', state)
-
-//   let screenToRequest = undefined
-//   let defaultState = undefined
-
-//   const isInitial = action.type === 'Navigation/INIT'
-
-//   /**
-//    * If action is Navigation/INIT, which is the initial state,
-//    * we need to check if login is required for initial route/screen.
-//    * 
-//    * defaultState is an object like this:
-//    * 
-//    * {
-//    *   index: int,
-//    *   routes: [
-//    *     { key: string, routeName: string }
-//    *     ...
-//    *   ]
-//    * }
-//    * 
-//    * `routes` contains available routes and index tells us which route
-//    * is the default one.
-//    */
-//   if (isInitial) {
-//     defaultState = MainTabs.router.getStateForAction('Navigation/INIT')
-//     screenToRequest = defaultState.routes[defaultState.index].routeName
-//   } else if (action.type === 'Navigation/NAVIGATE') {
-//     screenToRequest = action.routeName
-//   }
-
-//   if (screenToRequest) {
-//     const screen = screens.getScreen(screenToRequest)
-//     console.log(`Is login required for ${screenToRequest}`, screen.screen.loginRequired)
-
-//     /**
-//      * If screen requires login, check if user is logged in
-//      */
-//     if (screen.screen.loginRequired) {
-//       getSession()
-//         .then(session => {
-//           console.log('session', session)
-          
-//           if (!session.login.access_token) {
-//             const previousRoutes = isInitial ? {} : state.routes
-    
-//             const routes = [
-//               ...previousRoutes,
-//               {
-//                 key: 'LoginScreen',
-//                 routeName: 'LoginScreen',
-//                 params: {
-//                   showBackButton: !isInitial
-//                 }
-//               }
-//             ]
-    
-//             return {
-//               ...state,
-//               routes,
-//               index: routes.length-1
-//             }
-//           }
-//         })
-//       ;
-      
-//       return null;
-//     }
-//   }
-  
-//   return defaultGetStateForAction(action, state);
-// }
-
-/* stackNavigator.router.getStateForAction = (action, state) => {
-  console.log('Action', action)
-  console.log('State', state)
-  const defaultState = defaultGetStateForAction(action, state);
-  console.log('defaultState', defaultState)
-  return defaultState
-} */
-
-//stackNavigator.router.getStateForAction = customStateForAction
-
 
 export default stackNavigator
 export { statusBar }

@@ -1,4 +1,5 @@
 import LoginScreen from './LoginScreen'
+import MemberCardScreen from './MemberCardScreen'
 import NewsScreen from './NewsScreen'
 import NewsItemScreen from './NewsItemScreen'
 import ProfileScreen from './ProfileScreen'
@@ -8,6 +9,9 @@ export function getScreen(screen) {
   const appScreens = {
     LoginScreen: {
       screen: LoginScreen,
+    },
+    MemberCardScreen: {
+      screen: MemberCardScreen,
     },
     NewsScreen: {
       screen: NewsScreen,
@@ -33,6 +37,7 @@ export function getScreen(screen) {
 
 export {  
   LoginScreen,
+  MemberCardScreen,
   NewsScreen,
   NewsItemScreen,
   ProfileScreen,
